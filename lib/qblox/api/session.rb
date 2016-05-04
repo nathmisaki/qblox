@@ -45,14 +45,11 @@ module Qblox
 
       def norm_hash(hash, parent: nil)
         norms = []
-        hash.to_a.sort { |a,b| a.first <=> b.first }
+        hash.to_a.sort { |a, b| a.first <=> b.first }
           .each do |key, val|
           key = "#{parent}[#{key}]" if parent
-          if val.is_a?(Hash)
-            norms.push(norm_hash(val, parent: key))
-          else
-            norms.push("#{key}=#{val}")
-          end
+          norms.push(norm_hash(val, parent: key)) && next if val.is_a?(Hash)
+          norms.push("#{key}=#{val}")
         end
         norms.flatten
       end
