@@ -5,8 +5,8 @@ module Qblox
   module Api
     # Class responsible for common configs on Api files
     class Base
-      def initialize(config: nil)
-        @config = config || Qblox.config
+      def initialize(opts = {})
+        @config = opts[:config] || Qblox.config
         @path = ''
         @format = 'json'
         @headers = {

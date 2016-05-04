@@ -2,8 +2,8 @@ module Qblox
   module Api
     # http://quickblox.com/developers/Overview
     class AccountSettings < Base
-      def initialize(*args)
-        super(*args)
+      def initialize(opts={})
+        super(opts)
         @path = 'account_settings'
       end
 

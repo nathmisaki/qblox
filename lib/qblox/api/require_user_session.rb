@@ -5,6 +5,14 @@ module Qblox
       end
 
       module InstanceMethods
+        def get_token_from_opts(opts = {})
+          return opts[:token] if opts[:token]
+          user = opts[:user]
+          get_token_for(login: user[:login],
+                        password: user[:password],
+                        email: user[:email])
+        end
+
         def get_token_for(login: nil, email: nil, password:)
           return @session['session']['token'] if @session
           if login.nil? && email.nil?

@@ -5,8 +5,8 @@ module Qblox
       ATTRIBUTES = %w(login password email blob_id external_user_id
                    facebook_id twitter_id full_name phone website
                    custom_data tag_list).map(&:to_sym)
-      def initialize(*args)
-        super(*args)
+      def initialize(opts={})
+        super(opts)
         @path = 'users'
       end
 

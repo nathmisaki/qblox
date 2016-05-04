@@ -5,8 +5,8 @@ module Qblox
     # Manage Session on Quickblox
     # http://quickblox.com/developers/Authentication_and_Authorization
     class Session < ApiEndpoint
-      def initialize(*args)
-        super(*args)
+      def initialize(opts={})
+        super(opts)
         @path = 'session'
       end
 
