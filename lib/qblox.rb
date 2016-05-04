@@ -1,20 +1,25 @@
 require 'qblox/version'
 require 'qblox/config'
 require 'qblox/api/base'
+require 'qblox/api/api_endpoint'
 require 'qblox/api/account_settings'
+require 'qblox/api/session'
 
 # Module Interface that exposes some of the functionality for the Qbox gem
 module Qblox
   def self.config(&block)
+    @config ||= Config.new
+
     if block
-      @config ||= Config.new
       block.call(@config)
+      fetch_account_settings if @config.api_endpoint.nil?
     end
+
     @config
   end
 
   def self.fetch_account_settings
-    Qblox::Api::AccountSettings.new.get.each do |key, val|
+    Qblox::Api::AccountSettings.new.fetch.each do |key, val|
       config.send("#{key}=", val)
     end
   end

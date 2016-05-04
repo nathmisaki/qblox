@@ -24,7 +24,7 @@ describe Qblox::Api::Base do
     context 'calling' do
       subject { described_class.new(config: @config) }
 
-      it 'should call config' do
+      it 'should call base_api_endpoint config' do
         expect(@config).to receive(:base_api_endpoint)
           .and_return('https://api.quickblox.com')
         subject.connection

@@ -27,6 +27,13 @@ module Qblox
         "/#{@path}.#{@format}"
       end
 
+      def query(method, &req_block)
+        response = connection.send(method, &req_block)
+        check_success(response)
+        puts response.inspect
+        json_parse(response.body)
+      end
+
       private
 
       def check_success(response)

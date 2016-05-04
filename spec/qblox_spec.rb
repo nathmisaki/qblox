@@ -13,8 +13,24 @@ describe Qblox do
     context 'setting configurations through block' do
       before do
         @acc_key = 'asdf1234'
+        expect(Qblox).to receive(:fetch_account_settings)
         Qblox.config do |c|
           c.account_key = @acc_key
+        end
+      end
+
+      it 'should set account_key correctly' do
+        expect(Qblox.config.account_key).to eq(@acc_key)
+      end
+    end
+
+    context 'setting all configurations directly' do
+      before do
+        @acc_key = 'asdf1234'
+        expect(Qblox).to_not receive(:fetch_account_settings)
+        Qblox.config do |c|
+          c.account_key = @acc_key
+          c.api_endpoint = 'https://api.quickblox.com'
         end
       end
 
@@ -39,7 +55,7 @@ describe Qblox do
           s3_bucket_name: 'qbprod'
         }
         expect_any_instance_of(Qblox::Api::AccountSettings)
-          .to receive(:get).and_return(@acc_settings)
+          .to receive(:fetch).and_return(@acc_settings)
       end
 
       it 'should call get on AccountSettings' do
