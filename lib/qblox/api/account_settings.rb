@@ -12,10 +12,11 @@ module Qblox
       end
 
       def fetch
-        query :get do |req|
+        response = query :get do |req|
           req.url url
           req.headers = headers
         end
+        json_parse(response.body)
       end
     end
   end

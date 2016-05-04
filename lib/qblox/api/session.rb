@@ -20,11 +20,15 @@ module Qblox
       # provider, keys, twitter_digits should be used just like the
       # documentation http://quickblox.com/developers/Authentication_and_Authorization#API_Session_Creation
       def create(*args)
-        query :post do |req|
+        response = query :post do |req|
           req.url url
           req.headers = headers
           req.params = params(*args)
         end
+        data = json_parse(response.body)
+        data['session']['token_expiration'] =
+          Time.parse(response.headers['qb-token-expirationdate'])
+        data
       end
 
       private
