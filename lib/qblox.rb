@@ -6,6 +6,8 @@ require 'qblox/api/api_endpoint'
 require 'qblox/api/account_settings'
 require 'qblox/api/session'
 require 'qblox/api/user'
+require 'qblox/api/require_user_session'
+require 'qblox/api/dialog'
 
 # Module Interface that exposes some of the functionality for the Qbox gem
 module Qblox
