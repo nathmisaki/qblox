@@ -38,7 +38,8 @@ module Qblox
 
       def check_success(response)
         return if response.status >= 200 && response.status < 300
-        fail Error, "Status: #{response.status} Body: #{response.body}"
+        fail(Error, "Status: #{response.status} Body: #{response.body}\n"\
+             "#{response.inspect}")
       end
 
       def json_parse(body)

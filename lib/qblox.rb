@@ -1,9 +1,11 @@
 require 'qblox/version'
 require 'qblox/config'
+require 'qblox/api/error'
 require 'qblox/api/base'
 require 'qblox/api/api_endpoint'
 require 'qblox/api/account_settings'
 require 'qblox/api/session'
+require 'qblox/api/user'
 
 # Module Interface that exposes some of the functionality for the Qbox gem
 module Qblox
