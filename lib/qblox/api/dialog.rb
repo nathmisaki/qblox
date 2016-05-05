@@ -1,20 +1,9 @@
 module Qblox
   module Api
-    class Dialog < ApiEndpoint
-      include RequireUserSession
-      # This API needs to deal with a user session.
-      #
-      # So you should pass token, user: { login: '...', password: '***' },
-      # or user: { email: '...', password: '***' } to authenticate
-      def initialize(opts={})
-        super(opts)
-        @path = 'chat/Dialog'
-        @token = get_token_from_opts(opts)
-      end
 
-      def headers
-        super.merge(QB_TOKEN_HEADER => @token)
-      end
+    class Dialog < Connections::ApiEndpoint
+      @path = 'chat/Dialog'
+      include RequireUserSession
 
       # Get a list of Dialogs that a user participates
       # http://quickblox.com/developers/Chat#Retrieve_dialogs
@@ -23,8 +12,7 @@ module Qblox
       # to filter results. Just as explained on the link above
       def index(options: {})
         response = query(:get) do |req|
-          req.url url
-          req.headers = headers
+          req.params = options
         end
         json_parse(response.body)
       end
@@ -41,8 +29,6 @@ module Qblox
         end
 
         response = query(:post) do |req|
-          req.url url
-          req.headers = headers
           req.params = data
         end
         json_parse(response.body)

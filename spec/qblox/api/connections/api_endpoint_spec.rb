@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Qblox::Api::ApiEndpoint do
+describe Qblox::Api::Connections::ApiEndpoint do
   describe '#connection' do
     before do
       @config = double(Qblox::Config)

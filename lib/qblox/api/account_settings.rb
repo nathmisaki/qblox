@@ -1,21 +1,15 @@
 module Qblox
   module Api
     # http://quickblox.com/developers/Overview
-    class AccountSettings < Base
-      def initialize(opts={})
-        super(opts)
-        @path = 'account_settings'
-      end
+    class AccountSettings < Connections::Base
+      @path = 'account_settings'
 
       def headers
         super.merge('QB-Account-Key' => Qblox.config.account_key)
       end
 
       def fetch
-        response = query :get do |req|
-          req.url url
-          req.headers = headers
-        end
+        response = query :get
         json_parse(response.body)
       end
     end

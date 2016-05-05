@@ -4,11 +4,8 @@ module Qblox
   module Api
     # Manage Session on Quickblox
     # http://quickblox.com/developers/Authentication_and_Authorization
-    class Session < ApiEndpoint
-      def initialize(opts={})
-        super(opts)
-        @path = 'session'
-      end
+    class Session < Connections::ApiEndpoint
+      @path = 'session'
 
       # Create a Session (both API Session or API User Sign In)
       #
@@ -21,8 +18,6 @@ module Qblox
       # documentation http://quickblox.com/developers/Authentication_and_Authorization#API_Session_Creation
       def create(*args)
         response = query :post do |req|
-          req.url url
-          req.headers = headers
           req.params = params(*args)
         end
         data = json_parse(response.body)

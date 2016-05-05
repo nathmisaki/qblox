@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Qblox::Api::Base do
+describe Qblox::Api::Connections::Base do
   before do
     @config = double(Qblox::Config)
   end
