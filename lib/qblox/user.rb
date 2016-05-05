@@ -1,5 +1,5 @@
 module Qblox
-  class User
+  class User < Base
     attr_accessor(:id, :owner_id, :full_name, :email, :login, :phone,
                   :website, :created_at, :updated_at, :last_request_at,
                   :external_user_id, :facebook_id, :twitter_id, :blob_id,
@@ -8,17 +8,27 @@ module Qblox
 
     def self.find(id)
       attrs = Qblox::Api::User.new.find_by_id(id)
-      self.new.attributes(attrs['user'])
+      self.new attrs['user']
     end
 
     def self.find_by_external_id(id)
       attrs = Qblox::Api::User.new.find_by_external_id(id)
-      self.new.attributes(attrs['user'])
+       self.new attrs['user']
+    end
+
+    def self.create(attrs)
+      attrs = Qblox::Api::User.new.create(attrs)
+      self.new attrs['user']
+    end
+
+    def sign_in(password)
+      @password = password
+      token
     end
 
     def token
       return @token if token_valid?
-      @session = Qblox::Api::Session.new.create(session_data)
+      @session = Qblox::Api::Session.new.create(user: session_data)
       @token_expiration = @session['session']['token_expiration']
       @token = @session['session']['token']
     end
@@ -27,10 +37,12 @@ module Qblox
       @dialogs ||= Qblox::Api::Dialog.new(token: token).index
     end
 
-    def messages
-    end
-
-    def send_message
+    def send_pvt_message(recipient_id, message, options = {})
+      options[:send_to_chat] ||= 1
+      options[:markable] ||= 1
+      options[:reciptient_id] = recipient_id
+      options[:message] = message
+      Qblox::Api::Message.new.create(options)
     end
 
     private

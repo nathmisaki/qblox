@@ -4,8 +4,6 @@ module Qblox
       self.attributes = attrs
     end
 
-    protected
-
     def attributes=(attrs)
       attrs.each do |key, val|
         begin
