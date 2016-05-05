@@ -4,7 +4,7 @@ This gem was made to communicate with the quickblox API
 
 THIS IS NOT READY. SEVERAL CALLS ARE STILL MISSING.
 
-But you are welcome to contributing to improve the gem.
+But you are welcome to contribute to improve the gem.
 
 ## Installation
 
