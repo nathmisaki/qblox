@@ -4,7 +4,7 @@ module Qblox
                   :website, :created_at, :updated_at, :last_request_at,
                   :external_user_id, :facebook_id, :twitter_id, :blob_id,
                   :custom_data, :twitter_digits_id, :user_tags)
-    attr_accessor :password
+    attr_accessor :password, :session, :token, :token_expiration
 
     def self.find(id)
       attrs = Qblox::Api::User.new.find_by_id(id)
