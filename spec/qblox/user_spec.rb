@@ -14,12 +14,8 @@ describe Qblox::User do
       it { is_expected.to respond_to(:dialogs) }
     end
 
-    describe '#messages' do
-      it { is_expected.to respond_to(:messages) }
-    end
-
-    describe '#send_message' do
-      it { is_expected.to respond_to(:send_message) }
+    describe '#send_pvt_message' do
+      it { is_expected.to respond_to(:send_pvt_message) }
     end
   end
 end
