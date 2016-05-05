@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Gem to use Quickblox REST API'
   spec.description   = 'This gem is still under development. '\
                        'Consider this before using it in production'
-  spec.homepage      = 'https://github.com/doghero/qbox'
+  spec.homepage      = 'https://github.com/nelsonmhjr/qbox'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
