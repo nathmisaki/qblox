@@ -31,6 +31,23 @@ module Qblox
         json_parse(response.body)
       end
 
+      def update(id, args = {})
+        @token = args.delete(:token)
+        response = query(:put) do |req|
+          req.url url(id: id)
+          req.params['user'] = args
+        end
+        json_parse(response.body)
+      end
+
+      def destroy(id)
+        @token = args.delete(:token)
+        response = query(:delete) do |req|
+          req.url url(id: id)
+        end
+        true
+      end
+
       # Show API User by External User Id
       # http://quickblox.com/developers/Users#Retrieve_API_User_by_external_user_id
       def find_by_external_id(id)

@@ -1,9 +1,10 @@
 module Qblox
   class User < Base
-    attr_accessor(:id, :owner_id, :full_name, :email, :login, :phone,
-                  :website, :created_at, :updated_at, :last_request_at,
-                  :external_user_id, :facebook_id, :twitter_id, :blob_id,
-                  :custom_data, :twitter_digits_id, :user_tags)
+    API_ATTRS = [:id, :owner_id, :full_name, :email, :login, :phone,
+                 :website, :created_at, :updated_at, :last_request_at,
+                 :external_user_id, :facebook_id, :twitter_id, :blob_id,
+                 :custom_data, :twitter_digits_id, :user_tags]
+    attr_accessor *API_ATTRS
     attr_accessor :password, :session, :token, :token_expiration
 
     def self.find(id)
@@ -24,6 +25,12 @@ module Qblox
     def sign_in(password)
       @password = password
       token
+    end
+
+    def update
+      data = API_ATTRS.map { |at| send(at) if at != :id }.compact
+      attrs = Qblox::Api::User.new.update(id, data)
+      self.attributes = attrs
     end
 
     def token
