@@ -42,7 +42,8 @@ module Qblox
       options[:markable] ||= 1
       options[:reciptient_id] = recipient_id
       options[:message] = message
-      Qblox::Api::Message.new.create(options)
+      Qblox::Api::Message.new(token: token, user: session_data)
+        .create(options)
     end
 
     private
