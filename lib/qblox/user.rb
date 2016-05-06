@@ -40,7 +40,7 @@ module Qblox
     def send_pvt_message(recipient_id, message, options = {})
       options[:send_to_chat] ||= 1
       options[:markable] ||= 1
-      options[:reciptient_id] = recipient_id
+      options[:recipient_id] = recipient_id
       options[:message] = message
       Qblox::Api::Message.new(token: token, user: session_data)
         .create(options)
