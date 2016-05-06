@@ -4,6 +4,8 @@ module Qblox
                  :website, :created_at, :updated_at, :last_request_at,
                  :external_user_id, :facebook_id, :twitter_id, :blob_id,
                  :custom_data, :twitter_digits_id, :user_tags]
+    SKIP_UPDATE_ATTRS = Set.new([:id, :created_at, :last_request_at,
+                                 :owner_id, :updated_at])
     attr_accessor *API_ATTRS
     attr_accessor :password, :session, :token, :token_expiration
 
@@ -29,7 +31,8 @@ module Qblox
 
     def update
       data = API_ATTRS.each_with_object({}) do |at, hash|
-        hash[at] = send(at) if at != :id
+        val = send(at)
+        hash[at] = val if !val.nil? && !SKIP_UPDATE_ATTRS.include?(at)
       end.compact
       data[:token] = token
       attrs = Qblox::Api::User.new.update(id, data)
