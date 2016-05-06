@@ -29,6 +29,7 @@ module Qblox
 
     def update
       data = API_ATTRS.map { |at| send(at) if at != :id }.compact
+      data[:token] = token
       attrs = Qblox::Api::User.new.update(id, data)
       self.attributes = attrs
     end
