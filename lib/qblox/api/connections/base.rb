@@ -10,12 +10,13 @@ module Qblox
           @config = opts[:config] || Qblox.config
           @path ||= self.class.instance_variable_get('@path')
           @format = 'json'
+          @params = {}
           @headers = {
             'QuickBlox-REST-API-Version' => '0.1.1'
           }
         end
 
-        attr_reader :headers
+        attr_reader :headers, :params
 
         def connection
           Faraday.new(url: @config.base_api_endpoint) do |conn|

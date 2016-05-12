@@ -33,6 +33,14 @@ module Qblox
         end
         json_parse(response.body)
       end
+
+      def update(chat_dialog_id, data = {})
+        response = query(:put) do |req|
+          req.url url(id: chat_dialog_id)
+          req.params = data
+        end
+        json_parse(response.body)
+      end
     end
   end
 end
