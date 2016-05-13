@@ -10,11 +10,19 @@ module Qblox
       #
       # options keyword should be a hash and could contain keys
       # to filter results. Just as explained on the link above
-      def index(options: {})
+      def index(options = {})
+        all = options.delete('all') || true
         response = query(:get) do |req|
           req.params = options
         end
-        json_parse(response.body)
+        data = json_parse(response.body)
+        return data unless all
+        @result ||= data
+        @result['items'].concat(data['items'])
+        if @result['total_entries'] > @result['items'].size
+          index(options.merge(skip: @result['items'].size))
+        end
+        return @result
       end
 
       def create(data = {})

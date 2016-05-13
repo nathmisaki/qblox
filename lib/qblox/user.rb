@@ -59,6 +59,15 @@ module Qblox
         .create(options)
     end
 
+    def send_message(chat_dialog_id, message, options = {})
+      options[:send_to_chat] ||= 1
+      options[:markable] ||= 1
+      options[:chat_dialog_id] = chat_dialog_id
+      options[:message] = message
+      Qblox::Api::Message.new(token: token, user: session_data)
+        .create(options)
+    end
+
     private
 
     def session_data
