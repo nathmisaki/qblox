@@ -47,7 +47,9 @@ module Qblox
     end
 
     def dialogs
-      @dialogs ||= Qblox::Api::Dialog.new(token: token).index
+      return @dialogs unless @dialogs.nil?
+      @dialogs = Qblox::Api::Dialog.new(token: token).index
+      @dialogs = Qblox::Dialog::Collection.new(@dialogs)
     end
 
     def send_pvt_message(recipient_id, message, options = {})

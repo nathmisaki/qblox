@@ -1,23 +1,23 @@
 module Qblox
-  class Dialog
-    attr_accessor(:id, :owner_id, :full_name, :email, :login, :phone,
-                :website, :created_at, :updated_at, :last_request_at,
-                :external_user_id, :facebook_id, :twitter_id, :blob_id,
-                :custom_data, :twitter_digits_id, :user_tags)
+  class Dialog < Qblox::Base
+    attr_accessor(:_id, :accessible_for_ids, :created_at, :last_message,
+                  :last_message_date_sent, :last_message_user_id, :name,
+                  :occupants_ids, :photo, :type, :updated_at, :user_id,
+                  :xmpp_room_jid, :unread_messages_count)
+    alias :id :_id
 
+    class Collection < Array
+      attr_accessor(:total_entries, :skip, :limit, :items)
 
-    private
-
-    def attributes=(attrs)
-      attrs = attrs['user'] if attrs['user']
-      attrs.each do |key, val|
-        begin
-          send("#{key}=", val)
-        rescue NoMethodError
-          # TODO: Log error
+      def initialize(attrs)
+        self.total_entries = attrs['total_entries']
+        self.skip = attrs['skip']
+        self.limit = attrs['limit']
+        self.items = attrs['items']
+        items.each do |item|
+          push(Qblox::Dialog.new(item))
         end
       end
-      self
     end
   end
 end
