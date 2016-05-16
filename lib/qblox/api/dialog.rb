@@ -46,7 +46,7 @@ module Qblox
         response = query(:post) do |req|
           req.params = data
         end
-        json_parse(response.body)
+        data = json_parse(response.body)
       end
 
       def update(chat_dialog_id, data = {})

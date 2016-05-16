@@ -53,7 +53,8 @@ module Qblox
     end
 
     def create_dialog(attrs = {})
-      Qblox::Api::Dialog.new(token: token).create(attrs)
+      data = Qblox::Api::Dialog.new(token: token).create(attrs)
+      Qblox::Dialog.new(data)
     end
 
     def send_pvt_message(recipient_id, message, options = {})
