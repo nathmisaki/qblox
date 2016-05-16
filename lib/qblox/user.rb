@@ -52,6 +52,10 @@ module Qblox
       @dialogs = Qblox::Dialog::Collection.new(@dialogs)
     end
 
+    def create_dialog(attrs = {})
+      Qblox::Api::Dialog.new(token: token).create(attrs)
+    end
+
     def send_pvt_message(recipient_id, message, options = {})
       options[:send_to_chat] ||= 1
       options[:markable] ||= 1
