@@ -31,7 +31,7 @@ module Qblox
 
         response = multiconn.post(uri.path, params.merge(file: file))
         puts response.inspect
-        return response.status == 201
+        return file.size if response.status == 201
       end
 
       def update(blob_id, data={})
@@ -42,11 +42,13 @@ module Qblox
         json_parse(response.body)
       end
 
-      def complete(blob_id)
+      def complete(blob_id, size)
         response = query(:put) do |req|
-          req.url url(id: blob_id, custom_action: '/complete')
+          req.url(
+            url(id: blob_id, custom_action: '/complete'),
+            { blob: { size: size } })
         end
-        json_parse(response.body)
+        return response.status == 200
       end
 
       private
