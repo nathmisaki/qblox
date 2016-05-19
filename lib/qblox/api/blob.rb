@@ -58,6 +58,25 @@ module Qblox
         json_parse(response.body)
       end
 
+      def download_url(id: nil, uid: nil)
+        return download_url_by_id(id) if id
+        return download_url_by_uid(uid) if uid
+      end
+
+      def download_url_by_id(id)
+        response = query(:get) do |req|
+          req.url url(id: id, custom_action: '/download')
+        end
+        return response.headers['location'] if response.status == 302
+      end
+
+      def download_url_by_uid(uid)
+        response = query(:get) do |req|
+          req.url url(id: uid)
+        end
+        return response.headers['location'] if response.status == 302
+      end
+
       private
 
       def validate_params(data)

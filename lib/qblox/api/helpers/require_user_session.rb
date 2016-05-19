@@ -20,7 +20,8 @@ module Qblox
         end
 
         def token
-          @token ||= token_from_opts(@opts)
+          return @token unless @token.nil?
+          @token = token_from_opts(@opts)
         end
 
         def token_from_opts(opts = {})

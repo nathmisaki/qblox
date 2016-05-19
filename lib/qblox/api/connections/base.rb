@@ -47,7 +47,7 @@ module Qblox
         private
 
         def check_success(response)
-          return if response.status >= 200 && response.status < 300
+          return if response.status >= 200 && response.status < 400
           fail(Error, "Status: #{response.status} Body: #{response.body}\n"\
                "#{response.inspect}")
         end

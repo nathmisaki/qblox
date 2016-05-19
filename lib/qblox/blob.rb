@@ -9,7 +9,21 @@ module Qblox
       length = api.upload_file(file_path, data['blob']['blob_object_access'])
       return unless length
       return unless api.complete(data['blob']['id'], length)
-      self.new(api.show(data['blob']['id']))
+      self.new(api.show(data['blob']['id'])['blob'])
+    end
+
+    def self.find(id, token:)
+      api = Qblox::Api::Blob.new(token: token)
+      self.new(api.show(id)['blob'])
+    end
+
+    def download_url(token: nil)
+      if @public
+        api = Qblox::Api::Blob.new(token: false)
+      else
+        api = Qblox::Api::Blob.new(token: token)
+      end
+      api.download_url(id: id)
     end
   end
 end
