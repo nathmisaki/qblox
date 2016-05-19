@@ -51,6 +51,13 @@ module Qblox
         return response.status == 200
       end
 
+      def show(blob_id)
+        response = query(:get) do |req|
+          req.url url(id: blob_id)
+        end
+        json_parse(response.body)
+      end
+
       private
 
       def validate_params(data)
