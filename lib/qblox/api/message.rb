@@ -10,7 +10,7 @@ module Qblox
         @params = data
         validate_params(@params)
         response = query(:post) do |req|
-          req.params = params(data)
+          req.params = @params
         end
         json_parse(response.body)
       end
