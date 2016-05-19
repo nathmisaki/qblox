@@ -49,8 +49,6 @@ module Qblox
           fail(ArgumentError, 'You need to provide chat_dialog_id or '\
                'recipient_id')
         end
-
-        fail ArgumentError, 'message required' if data[:message].nil?
         data
       end
     end
