@@ -57,6 +57,14 @@ module Qblox
       Qblox::Dialog.new(data)
     end
 
+    def send_custom_pvt_message(recipient_id, options = {})
+      options[:send_to_chat] ||= 1
+      options[:markable] ||= 1
+      options[:recipient_id] = recipient_id
+      Qblox::Api::Message.new(token: token, user: session_data)
+        .create(options)
+    end
+
     def send_pvt_message(recipient_id, message, options = {})
       options[:send_to_chat] ||= 1
       options[:markable] ||= 1
