@@ -14,9 +14,10 @@ require 'qblox/api/message'
 require 'qblox/api/blob'
 
 require 'qblox/base'
-require 'qblox/user'
-require 'qblox/dialog'
 require 'qblox/blob'
+require 'qblox/dialog'
+require 'qblox/message'
+require 'qblox/user'
 
 # Module Interface that exposes some of the functionality for the Qbox gem
 module Qblox
