@@ -21,7 +21,7 @@ module Qblox
           @custom[k] = v
         end
       end
-      @extension = Struct.new(custom.keys.map(&:to_sym)).new(custom.values)
+      @extension = Struct.new(*custom.keys.map(&:to_sym)).new(*custom.values)
     end
   end
 end
