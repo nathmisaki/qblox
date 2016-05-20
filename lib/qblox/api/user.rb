@@ -57,6 +57,24 @@ module Qblox
         json_parse(response.body)
       end
 
+      # Show API User by Email
+      # http://quickblox.com/developers/Users#Retrieve_API_User_by_email
+      def find_by_email(email)
+        response = query(:get) do |req|
+          req.url url(path: 'users/by_email'), email: email
+        end
+        json_parse(response.body)
+      end
+
+      # Show API User by login
+      # http://quickblox.com/developers/Users#Retrieve_API_User_by_login
+      def find_by_login(login)
+        response = query(:get) do |req|
+          req.url url(path: 'users/by_login'), login: login
+        end
+        json_parse(response.body)
+      end
+
       private
 
       def params(args = {})

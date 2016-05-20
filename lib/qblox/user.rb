@@ -16,6 +16,16 @@ module Qblox
 
     def self.find_by_external_id(id)
       attrs = Qblox::Api::User.new.find_by_external_id(id)
+      self.new attrs['user']
+    end
+
+    def self.find_by_email(email)
+      attrs = Qblox::Api::User.new.find_by_email(email)
+      self.new attrs['user']
+    end
+
+    def self.find_by_login(login)
+      attrs = Qblox::Api::User.new.find_by_login(login)
        self.new attrs['user']
     end
 
