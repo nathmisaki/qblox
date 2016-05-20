@@ -56,10 +56,12 @@ module Qblox
       @token = @session['session']['token']
     end
 
-    def dialogs
-      return @dialogs unless @dialogs.nil?
-      @dialogs = Qblox::Api::Dialog.new(token: token).index
-      @dialogs = Qblox::Dialog::Collection.new(@dialogs)
+    def dialogs(filters = {})
+      return @dialogs unless @dialogs.nil? || filters != {}
+      dialogs = Qblox::Api::Dialog.new(token: token).index(filters)
+      dialogs = Qblox::Dialog::Collection.new(dialogs)
+      @dialogs = dialogs unless filters != {}
+      dialogs
     end
 
     def create_dialog(attrs = {})
