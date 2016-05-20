@@ -8,8 +8,8 @@ module Qblox
     alias :id :_id
 
     def initialize(attrs = {})
-      super(attrs)
       @custom = {}
+      super(attrs)
     end
 
     def attributes=(attrs)
@@ -18,7 +18,7 @@ module Qblox
         if ats.include?(k.to_s)
           send("#{k}=", v)
         else
-          custom[k] = v
+          @custom[k] = v
         end
       end
       @extension = Struct.new(custom.keys.map(&:to_sym)).new(custom.values)
