@@ -25,5 +25,18 @@ module Qblox
       end
       api.download_url(id: id)
     end
+
+    def type
+      case content_type
+      when /image/ then
+        'image'
+      when /video/ then
+        'video'
+      when /audio/ then
+        'audio'
+      else
+        'file'
+      end
+    end
   end
 end
