@@ -1,5 +1,7 @@
 require 'cgi'
 require 'uri'
+require 'open-uri'
+require 'tmpdir'
 module Qblox
   module Api
     # Content API
@@ -18,20 +20,11 @@ module Qblox
       end
 
       def upload_file(file_path, blob_object_access)
-        uri = URI.parse(blob_object_access['params'])
-        params = CGI.parse(uri.query)
-        params = Hash[params.map { |k, v| [k, v.size == 1 ? v.first : v] }]
-
-        multiconn = Faraday.new(url: "#{uri.scheme}://#{uri.host}") do |conn|
-          conn.request :multipart
-          conn.adapter Faraday.default_adapter # make requests with Net::HTTP
+        if File.exists?(file_path)
+          upload_local_file(file_path, blob_object_access)
+        else
+          upload_file_from_remote(file_path, blob_object_access)
         end
-
-        file = Faraday::UploadIO.new(file_path, params['Content-Type'])
-
-        response = multiconn.post(uri.path, params.merge(file: file))
-        puts response.inspect
-        return file.size if response.status == 201
       end
 
       def update(blob_id, data={})
@@ -78,6 +71,38 @@ module Qblox
       end
 
       private
+
+      def upload_local_file(file_path, blob_object_access)
+        uri = URI.parse(blob_object_access['params'])
+        params = CGI.parse(uri.query)
+        params = Hash[params.map { |k, v| [k, v.size == 1 ? v.first : v] }]
+
+        multiconn = Faraday.new(url: "#{uri.scheme}://#{uri.host}") do |conn|
+          conn.request :multipart
+          conn.adapter Faraday.default_adapter # make requests with Net::HTTP
+        end
+
+        file = Faraday::UploadIO.new(file_path, params['Content-Type'])
+
+        response = multiconn.post(uri.path, params.merge(file: file))
+        puts response.inspect
+        return file.size if response.status == 201
+      end
+
+      def upload_file_from_remote(url, blob_object_access)
+        base = File.basename url
+        random = rand(100000000000000000000).to_s(36)
+        Dir.mktmpdir do |dir|
+          local_file = File.expand_path("#{dir}/#{random}/#{base}"
+          File.open(local_file, "wb") do |saved_file|
+            # the following "open" is provided by open-uri
+            open(url, "rb") do |read_file|
+              saved_file.write(read_file.read)
+            end
+          end
+          upload_local_file(local_file, blob_object_access)
+        end
+      end
 
       def validate_params(data)
         fail ArgumentError, 'content_type required' if data[:content_type].nil?
