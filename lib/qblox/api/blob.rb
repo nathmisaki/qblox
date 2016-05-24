@@ -93,7 +93,8 @@ module Qblox
         base = File.basename url
         random = rand(100000000000000000000).to_s(36)
         Dir.mktmpdir do |dir|
-          local_file = File.expand_path("#{dir}/#{random}/#{base}"
+          Dir.mkdir("#{dir}/#{random}")
+          local_file = File.expand_path("#{dir}/#{random}/#{base}")
           File.open(local_file, "wb") do |saved_file|
             # the following "open" is provided by open-uri
             open(url, "rb") do |read_file|
