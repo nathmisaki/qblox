@@ -64,6 +64,11 @@ module Qblox
       dialogs
     end
 
+    def messages_from_dialog(chat_dialog_id, options: {})
+      dialog = Qblox::Dialog.new(id: chat_dialog_id)
+      dialog.messages(token: u.token, options: options)
+    end
+
     def create_dialog(attrs = {})
       data = Qblox::Api::Dialog.new(token: token).create(attrs)
       Qblox::Dialog.new(data)
