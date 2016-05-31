@@ -16,13 +16,40 @@ module Qblox
       end
 
       def index(chat_dialog_id, options = {})
-        @params = options
+        result = options.delete(:result)
+        all = options.delete(:all) || true
+        count = options.delete(:count)
+
         response = query(:get) do |req|
           req.headers = headers.merge('Content-Type' => 'application/json')
           req.body = JSON.dump(options)
           req.params = { chat_dialog_id: chat_dialog_id }
         end
-        json_parse(response.body)
+        data = json_parse(response.body)
+        return data unless all
+
+        unless count
+          response = query(:get) do |req|
+            req.headers = headers.merge('Content-Type' => 'application/json')
+            req.body = JSON.dump(options)
+            req.params = { chat_dialog_id: chat_dialog_id, count: 1 }
+          end
+          count = json_parse(response.body)
+          count = count['items']['count'].to_i
+        end
+
+        if result
+          result['items'].concat(data['items'])
+        else
+          result ||= data
+        end
+
+        if count > result['items'].size
+          result = index(options.merge(skip: result['items'].size,
+                                       result: result,
+                                       count: count))
+        end
+        return result
       end
 
       def update(message_id, options = {})

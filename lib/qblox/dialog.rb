@@ -6,6 +6,14 @@ module Qblox
                   :xmpp_room_jid, :unread_messages_count)
     alias :id :_id
 
+    def messages(token:, options: {})
+      return @messages unless @messages.nil? || options != {}
+      messages = Qblox::Api::Message.new(token: token).index(id, options)
+      messages = Qblox::Message::Collection.new(messages)
+      @messages = messages unless options != {}
+      messages
+    end
+
     class Collection < Array
       attr_accessor(:total_entries, :skip, :limit, :items)
 

@@ -1,8 +1,8 @@
 module Qblox
   class Message < Base
     ATTRIBUTES = [:_id, :created_at, :updated_at, :attachments, :read_ids,
-             :delivered_ids, :chat_dialog_id, :date_sent, :message,
-             :recipient_id, :sender_id]
+                  :delivered_ids, :chat_dialog_id, :date_sent, :message,
+                  :recipient_id, :sender_id, :read]
     attr_accessor *ATTRIBUTES
     attr_reader :custom, :extension
     alias :id :_id
@@ -22,6 +22,20 @@ module Qblox
         end
       end
       @extension = Struct.new(*custom.keys.map(&:to_sym)).new(*custom.values)
+    end
+
+    class Collection < Array
+      attr_accessor(:total_entries, :skip, :limit, :items)
+
+      def initialize(attrs)
+        self.total_entries = attrs['total_entries']
+        self.skip = attrs['skip']
+        self.limit = attrs['limit']
+        self.items = attrs['items']
+        items.each do |item|
+          push(Qblox::Message.new(item))
+        end
+      end
     end
   end
 end
