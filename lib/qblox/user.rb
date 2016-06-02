@@ -59,14 +59,14 @@ module Qblox
     def dialogs(filters = {})
       return @dialogs unless @dialogs.nil? || filters != {}
       dialogs = Qblox::Api::Dialog.new(token: token).index(filters)
-      dialogs = Qblox::Dialog::Collection.new(dialogs)
+      dialogs = Qblox::Dialog::Collection.new(dialogs, token: token)
       @dialogs = dialogs unless filters != {}
       dialogs
     end
 
     def messages_from_dialog(chat_dialog_id, options: {})
-      dialog = Qblox::Dialog.new(id: chat_dialog_id)
-      dialog.messages(token: u.token, options: options)
+      dialog = Qblox::Dialog.new(id: chat_dialog_id, token: token)
+      dialog.messages(options: options)
     end
 
     def create_dialog(attrs = {})

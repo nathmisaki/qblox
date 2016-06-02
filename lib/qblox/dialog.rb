@@ -6,10 +6,10 @@ module Qblox
                   :xmpp_room_jid, :unread_messages_count)
     alias :id :_id
 
-    def messages(token:, options: {})
+    def messages(token: nil, options: {})
       return @messages unless @messages.nil? || options != {}
-      messages = Qblox::Api::Message.new(token: token).index(id, options)
-      messages = Qblox::Message::Collection.new(messages)
+      messages = Qblox::Api::Message.new(token: token || @token).index(id, options)
+      messages = Qblox::Message::Collection.new(messages, token: token || @token)
       @messages = messages unless options != {}
       messages
     end
@@ -17,13 +17,13 @@ module Qblox
     class Collection < Array
       attr_accessor(:total_entries, :skip, :limit, :items)
 
-      def initialize(attrs)
+      def initialize(attrs, token: nil)
         self.total_entries = attrs['total_entries']
         self.skip = attrs['skip']
         self.limit = attrs['limit']
         self.items = attrs['items']
         items.each do |item|
-          push(Qblox::Dialog.new(item))
+          push(Qblox::Dialog.new(item.merge(token: token)))
         end
       end
     end

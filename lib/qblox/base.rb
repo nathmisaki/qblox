@@ -1,5 +1,7 @@
 module Qblox
   class Base
+    attr_accessor :token
+
     def initialize(attrs = {})
       self.attributes = attrs
     end
