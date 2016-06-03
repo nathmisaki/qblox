@@ -2,12 +2,12 @@ module Qblox
   module Api
     class Error < StandardError
       attr_reader :status_code
-      attr_reader :header
+      attr_reader :headers
       attr_reader :body
 
-      def initialize(status_code: nil, header: nil, body: nil)
+      def initialize(status_code: nil, headers: nil, body: nil)
         @status_code = status_code
-        @header = header.dup unless header.nil?
+        @headers = headers.dup unless headers.nil?
         @body = body
       end
     end

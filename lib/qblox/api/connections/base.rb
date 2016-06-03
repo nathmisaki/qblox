@@ -49,9 +49,9 @@ module Qblox
         def check_success(response)
           return if response.status >= 200 && response.status < 400
           if response.status > 500
-            error = ServerError.new(status_code: response.status, header: response.header, body: message.body)
+            error = ServerError.new(status_code: response.status, headers: response.headers, body: message.body)
           else
-            error = ClientError.new(status_code: response.status, header: response.header, body: message.body)
+            error = ClientError.new(status_code: response.status, headers: response.headers, body: message.body)
           end
           fail(error, "Status: #{response.status} Body: #{response.body}\n"\
                "#{response.inspect}")
