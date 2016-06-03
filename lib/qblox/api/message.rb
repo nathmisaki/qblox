@@ -11,7 +11,7 @@ module Qblox
         validate_params(@params)
         response = query(:post) do |req|
           req.headers = headers.merge('Content-Type' => 'application/json')
-          req.body = JSON.dump(options)
+          req.body = JSON.dump(@params)
         end
         json_parse(response.body)
       end
