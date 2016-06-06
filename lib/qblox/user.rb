@@ -74,6 +74,10 @@ module Qblox
       Qblox::Dialog.new(data)
     end
 
+    def delete_dialog(chat_dialog_id, options: {})
+      Qblox::Api::Dialog.new(token: token, id: chat_dialog_id).delete
+    end
+
     def send_custom_pvt_message(recipient_id, options = {})
       options[:send_to_chat] ||= 1
       options[:markable] ||= 1
