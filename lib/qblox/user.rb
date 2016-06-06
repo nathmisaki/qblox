@@ -75,7 +75,7 @@ module Qblox
     end
 
     def delete_dialog(chat_dialog_id, options: {})
-      Qblox::Api::Dialog.new(token: token, id: chat_dialog_id).delete
+      Qblox::Api::Dialog.new(token: token).delete(chat_dialog_id)
     end
 
     def send_custom_pvt_message(recipient_id, options = {})

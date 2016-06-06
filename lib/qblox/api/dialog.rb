@@ -60,7 +60,7 @@ module Qblox
       def delete(chat_dialog_id, data = {})
         response = query(:delete) do |req|
           req.url url(id: chat_dialog_id)
-          req.params = data 
+          req.params = data
         end
         json_parse(response.body)
       end
