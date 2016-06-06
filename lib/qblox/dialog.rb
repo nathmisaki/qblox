@@ -4,7 +4,6 @@ module Qblox
                   :last_message_date_sent, :last_message_user_id, :name,
                   :occupants_ids, :photo, :type, :updated_at, :user_id,
                   :xmpp_room_jid, :unread_messages_count)
-    alias :id :_id
 
     def messages(token: nil, options: {})
       return @messages unless @messages.nil? || options != {}
