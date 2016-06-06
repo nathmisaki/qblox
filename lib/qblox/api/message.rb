@@ -23,21 +23,13 @@ module Qblox
 
         response = query(:get) do |req|
           req.headers = headers.merge('Content-Type' => 'application/json')
-          req.body = JSON.dump(options)
+          #req.body = JSON.dump(options)
           req.params = { chat_dialog_id: chat_dialog_id }
         end
         data = json_parse(response.body)
         return data unless all
 
-        unless count
-          response = query(:get) do |req|
-            req.headers = headers.merge('Content-Type' => 'application/json')
-            req.body = JSON.dump(options)
-            req.params = { chat_dialog_id: chat_dialog_id, count: 1 }
-          end
-          count = json_parse(response.body)
-          count = count['items']['count'].to_i
-        end
+        count ||= count_messages(chat_dialog_id)
 
         if result
           result['items'].concat(data['items'])
@@ -68,6 +60,16 @@ module Qblox
         end
         puts response.inspect
         return true
+      end
+
+      def count_messages(chat_dialog_id)
+        response = query(:get) do |req|
+          req.headers = headers.merge('Content-Type' => 'application/json')
+          #req.body = JSON.dump(options)
+          req.params = { chat_dialog_id: chat_dialog_id, count: 1 }
+        end
+        count = json_parse(response.body)
+        count['items']['count'].to_i
       end
 
       private
