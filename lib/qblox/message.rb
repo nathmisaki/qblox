@@ -5,7 +5,6 @@ module Qblox
                   :recipient_id, :sender_id, :read, :token]
     attr_accessor *ATTRIBUTES
     attr_reader :custom, :extension
-    alias :id :_id
 
     def initialize(attrs = {})
       @custom = {}
@@ -15,9 +14,9 @@ module Qblox
     def attributes=(attrs)
       ats = Set.new(ATTRIBUTES.map(&:to_s))
       attrs.each do |k,v|
-        if ats.include?(k.to_s)
+        begin
           send("#{k}=", v)
-        else
+        rescue NoMethodError
           @custom[k] = v
         end
       end
