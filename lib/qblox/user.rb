@@ -80,6 +80,7 @@ module Qblox
 
     def send_custom_pvt_message(recipient_id, options = {})
       options[:send_to_chat] ||= 1
+      options[:save_to_history] ||= 1
       options[:markable] ||= 1
       options[:recipient_id] = recipient_id
       Qblox::Message.new(
@@ -89,6 +90,7 @@ module Qblox
 
     def send_pvt_message(recipient_id, message, options = {})
       options[:send_to_chat] ||= 1
+      options[:save_to_history] ||= 1
       options[:markable] ||= 1
       options[:recipient_id] = recipient_id
       options[:message] = message
@@ -99,6 +101,7 @@ module Qblox
 
     def send_message(chat_dialog_id, message, options = {})
       options[:send_to_chat] ||= 1
+      options[:save_to_history] ||= 1
       options[:markable] ||= 1
       options[:chat_dialog_id] = chat_dialog_id
       options[:message] = message
