@@ -50,7 +50,7 @@ module Qblox
           req.url url(id: message_id)
           req.params = options
         end
-        json_parse(response.body)
+        response
       end
 
       def destroy(message_id, options = {})
