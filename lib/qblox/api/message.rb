@@ -21,11 +21,7 @@ module Qblox
         all = options.delete(:all) || true
         count = options.delete(:count)
 
-        response = query(:get) do |req|
-          req.headers = headers.merge('Content-Type' => 'application/json')
-          #req.body = JSON.dump(options)
-          req.params = { chat_dialog_id: chat_dialog_id }
-        end
+        response = query(:get, chat_dialog_id: chat_dialog_id, limit: 1000)
         data = json_parse(response.body)
         return data unless all
 
@@ -38,7 +34,8 @@ module Qblox
         end
 
         if count > result['items'].size
-          result = index(options.merge(skip: result['items'].size,
+          result = index(chat_dialog_id,
+                         options.merge(skip: result['items'].size,
                                        result: result,
                                        count: count))
         end
@@ -63,11 +60,7 @@ module Qblox
       end
 
       def count_messages(chat_dialog_id)
-        response = query(:get) do |req|
-          req.headers = headers.merge('Content-Type' => 'application/json')
-          #req.body = JSON.dump(options)
-          req.params = { chat_dialog_id: chat_dialog_id, count: 1 }
-        end
+        response = query(:get, chat_dialog_id: chat_dialog_id, count: 1)
         count = json_parse(response.body)
         count['items']['count'].to_i
       end
