@@ -58,7 +58,7 @@ module Qblox
         response = query(:delete) do |req|
           req.url url(id: chat_dialog_id), data
         end
-        json_parse(response.body)
+        response
       end
     end
   end
