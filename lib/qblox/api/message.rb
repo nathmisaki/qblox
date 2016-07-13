@@ -21,7 +21,7 @@ module Qblox
         all = options.delete(:all) || true
         count = options.delete(:count)
 
-        response = query(:get, chat_dialog_id: chat_dialog_id, limit: 1000)
+        response = query(:get, params: {chat_dialog_id: chat_dialog_id, limit: 1000})
         data = json_parse(response.body)
         return data unless all
 
@@ -60,7 +60,7 @@ module Qblox
       end
 
       def count_messages(chat_dialog_id)
-        response = query(:get, chat_dialog_id: chat_dialog_id, count: 1)
+        response = query(:get, params: {chat_dialog_id: chat_dialog_id, count: 1})
         count = json_parse(response.body)
         count['items']['count'].to_i
       end
