@@ -74,7 +74,7 @@ module Qblox
       Qblox::Dialog.new(data)
     end
 
-    def delete_dialog(chat_dialog_id, options: {})
+    def delete_dialog(chat_dialog_id, options = {})
       Qblox::Api::Dialog.new(token: token).delete(chat_dialog_id, options)
     end
 
