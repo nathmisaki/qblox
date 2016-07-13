@@ -43,24 +43,20 @@ module Qblox
                "type = #{data[:type]}")
         end
 
-        response = query(:post) do |req|
-          req.params = data
-        end
+        response = query(:post, data)
         data = json_parse(response.body)
       end
 
       def update(chat_dialog_id, data = {})
         response = query(:put) do |req|
-          req.url url(id: chat_dialog_id)
-          req.params = data
+          req.url url(id: chat_dialog_id, data)
         end
         json_parse(response.body)
       end
 
       def delete(chat_dialog_id, data = {})
         response = query(:delete) do |req|
-          req.url url(id: chat_dialog_id)
-          req.params = data
+          req.url url(id: chat_dialog_id, data)
         end
         json_parse(response.body)
       end
