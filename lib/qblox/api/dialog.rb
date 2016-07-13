@@ -43,7 +43,7 @@ module Qblox
                "type = #{data[:type]}")
         end
 
-        response = query(:post, data)
+        response = query(:post, params: data)
         data = json_parse(response.body)
       end
 
