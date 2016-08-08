@@ -50,6 +50,13 @@ module Qblox
         response
       end
 
+      def update_all(options = {})
+        response = query(:put) do |req|
+          req.params = options
+        end
+        response
+      end
+
       def destroy(message_id, options = {})
         response = query(:delete) do |req|
           req.url url(id: message_id)
