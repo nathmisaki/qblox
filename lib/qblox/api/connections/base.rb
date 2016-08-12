@@ -19,7 +19,7 @@ module Qblox
 
         def connection
           Faraday.new(url: @config.base_api_endpoint) do |conn|
-            conn.response :logger
+            # conn.response :logger
             conn.request :url_encoded
             conn.adapter Faraday.default_adapter # make requests with Net::HTTP
           end
