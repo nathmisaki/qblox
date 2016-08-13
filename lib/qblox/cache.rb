@@ -1,8 +1,21 @@
+require 'singleton'
+require 'digest/sha1'
+require 'redis'
+
 module Qblox
   class Cache
     include Singleton
+
+    def self.hexdigest(obj)
+      Digest::SHA1.hexdigest(obj.inspect)
+    end
+
     def initialize
-      @redis = Redis.new Qblox.config.cache_url
+      @url = Qblox.config.cache_url
+      @uri = URI.parse(@url)
+      @redis = Redis.new(host: @uri.host, port: @uri.port || 3306)
+      @db = @uri.path.gsub(%r{^/}, '').to_i
+      @redis.select @db
     end
 
     def fetch(key, seconds_expiration, &block)

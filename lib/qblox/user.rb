@@ -9,6 +9,7 @@ module Qblox
     attr_accessor *API_ATTRS
     attr_accessor :password, :session, :token, :token_expiration
     FIND_EXPIRATION = 24 * 3600
+    SESSION_EXPIRATION = 3600
 
     def self.find(id)
       attrs = Qblox::Cache.instance.fetch("user:find:#{id}", FIND_EXPIRATION) do
@@ -60,7 +61,9 @@ module Qblox
 
     def token
       return @token if token_valid?
-      @session = Qblox::Api::Session.new.create(user: session_data)
+      @session = Qblox::Cache.instance.fetch("user:session#{Qblox::Cache.hexdigest(session_data)}", SESSION_EXPIRATION) do
+        Qblox::Api::Session.new.create(user: session_data)
+      end
       @token_expiration = @session['session']['token_expiration']
       @token = @session['session']['token']
     end

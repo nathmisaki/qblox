@@ -1,5 +1,6 @@
 require 'qblox/version'
 require 'qblox/config'
+require 'qblox/cache'
 require 'qblox/api/helpers/error'
 require 'qblox/api/helpers/require_user_session'
 
