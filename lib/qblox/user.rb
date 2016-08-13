@@ -8,25 +8,34 @@ module Qblox
                                  :owner_id, :updated_at])
     attr_accessor *API_ATTRS
     attr_accessor :password, :session, :token, :token_expiration
+    FIND_EXPIRATION = 24 * 3600
 
     def self.find(id)
-      attrs = Qblox::Api::User.new.find_by_id(id)
+      attrs = Qblox::Cache.instance.fetch("user:find:#{id}", FIND_EXPIRATION) do
+        Qblox::Api::User.new.find_by_id(id)
+      end
       self.new attrs['user']
     end
 
     def self.find_by_external_id(id)
-      attrs = Qblox::Api::User.new.find_by_external_id(id)
+      attrs = Qblox::Cache.instance.fetch("user:find_by_external_id:#{id}", FIND_EXPIRATION) do
+        Qblox::Api::User.new.find_by_external_id(id)
+      end
       self.new attrs['user']
     end
 
     def self.find_by_email(email)
-      attrs = Qblox::Api::User.new.find_by_email(email)
+      attrs = Qblox::Cache.instance.fetch("user:find_by_email:#{email}", FIND_EXPIRATION) do
+        Qblox::Api::User.new.find_by_email(email)
+      end
       self.new attrs['user']
     end
 
     def self.find_by_login(login)
-      attrs = Qblox::Api::User.new.find_by_login(login)
-       self.new attrs['user']
+      attrs = Qblox::Cache.instance.fetch("user:find_by_login:#{login}", FIND_EXPIRATION) do
+        Qblox::Api::User.new.find_by_login(login)
+      end
+      self.new attrs['user']
     end
 
     def self.create(attrs)
