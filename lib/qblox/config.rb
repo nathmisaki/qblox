@@ -3,7 +3,7 @@ module Qblox
   class Config
     BASE_API_ENDPOINT = 'https://api.quickblox.com'
     attr_accessor(:account_key, :account_id, :application_id,
-                  :auth_key, :auth_secret)
+                  :auth_key, :auth_secret, :cache_url)
     ACCOUNT_SETTINGS_VARS = [:api_endpoint, :chat_endpoint,
                              :turnserver_endpoint, :s3_bucket_name]
     attr_writer *ACCOUNT_SETTINGS_VARS
