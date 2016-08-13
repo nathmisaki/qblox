@@ -1,4 +1,5 @@
 require 'singleton'
+require 'yaml'
 require 'digest/sha1'
 require 'redis'
 
@@ -13,7 +14,8 @@ module Qblox
     def initialize
       @url = Qblox.config.cache_url
       @uri = URI.parse(@url)
-      @redis = Redis.new(host: @uri.host, port: @uri.port || 3306)
+      port = @uri.port == '' ? 6379 : @uri.port
+      @redis = Redis.new(host: @uri.host, port: port)
       @db = @uri.path.gsub(%r{^/}, '').to_i
       @redis.select @db
     end
