@@ -62,7 +62,6 @@ module Qblox
           req.url url(id: message_id)
           req.params = options
         end
-        puts response.inspect
         return true
       end
 

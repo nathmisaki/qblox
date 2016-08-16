@@ -55,7 +55,6 @@ module Qblox
 
       def sign(data)
         normalized_string = norm_hash(data).join('&')
-        puts normalized_string
 
         sha1 = OpenSSL::Digest::SHA1.new
         OpenSSL::HMAC.hexdigest(sha1, @config.auth_secret, normalized_string)

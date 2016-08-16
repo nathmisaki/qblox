@@ -85,7 +85,6 @@ module Qblox
         file = Faraday::UploadIO.new(file_path, params['Content-Type'])
 
         response = multiconn.post(uri.path, params.merge(file: file))
-        puts response.inspect
         return file.size if response.status == 201
       end
 
