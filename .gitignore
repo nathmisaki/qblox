@@ -8,4 +8,4 @@
 /spec/reports/
 /tmp/
 /Guardfile
-bin/console
+bin/console_dev
