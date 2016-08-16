@@ -12,6 +12,7 @@ module Qblox
     attr_accessor :cache_store
     attr_accessor(:account_key, :account_id, :application_id,
                   :auth_key, :auth_secret, :caching)
+
     ACCOUNT_SETTINGS_VARS = [:api_endpoint, :chat_endpoint,
                              :turnserver_endpoint, :s3_bucket_name]
     attr_writer *ACCOUNT_SETTINGS_VARS
@@ -28,16 +29,6 @@ module Qblox
       Qblox::Api::AccountSettings.new.fetch.each do |key, val|
         send("#{key}=", val)
       end
-    end
-
-    # @deprecated Please use {#cache_store} instead
-    def cache_url
-      warn "[DEPRECATION] `cache_url` is deprecated. Please use cache_store instead"
-    end
-
-    # @deprecated Please use {#cache_store=} instead
-    def cache_url=(val)
-      warn "[DEPRECATION] `cache_url=` is deprecated. Please use cache_store= instead"
     end
 
     ACCOUNT_SETTINGS_VARS.each do |var|
