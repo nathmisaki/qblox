@@ -1,44 +1,30 @@
 require 'singleton'
-require 'yaml'
-require 'digest/sha1'
-require 'redis'
-
 module Qblox
+  # Cache needs a {Config#cache_store}
+  #
   class Cache
     include Singleton
 
-    def self.hexdigest(obj)
-      Digest::SHA1.hexdigest(obj.inspect)
-    end
-
     def initialize
-      @url = Qblox.config.cache_url
-      @uri = URI.parse(@url)
-      port = @uri.port == '' ? 6379 : @uri.port
-      @redis = Redis.new(host: @uri.host, port: port)
-      @db = @uri.path.gsub(%r{^/}, '').to_i
-      @redis.select @db
+      @cache_store = Qblox.config.cache_store
+      if @cache_store
+        @caching = Qblox.config.caching.nil? ? true : Qblox.config.caching
+      else
+        @caching = false
+      end
     end
 
     def fetch(key, seconds_expiration, &block)
-      content = @redis.get(key_namespaced(key))
-      return decoded_content(content) if content
+      return block.call unless @caching
+
+      content = @cache_store.get(key)
+      return content if content
+
       content = block.call
-      @redis.setex(key_namespaced(key), seconds_expiration,
-                   encoded_content(content))
+
+      @cache_store.set_with_expiration(key, seconds_expiration, content)
+
       content
-    end
-
-    def encoded_content(content)
-      YAML.dump(content)
-    end
-
-    def decoded_content(raw_content)
-      YAML.load(raw_content)
-    end
-
-    def key_namespaced(key)
-      "qblox:cache:#{key}"
     end
   end
 end

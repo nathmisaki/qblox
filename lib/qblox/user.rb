@@ -61,7 +61,7 @@ module Qblox
 
     def token
       return @token if token_valid?
-      @session = Qblox::Cache.instance.fetch("user:session#{Qblox::Cache.hexdigest(session_data)}", SESSION_EXPIRATION) do
+      @session = Qblox::Cache.instance.fetch("user:session:#{Qblox::Cache.hexdigest(session_data)}", SESSION_EXPIRATION) do
         Qblox::Api::Session.new.create(user: session_data)
       end
       @token_expiration = @session['session']['token_expiration']

@@ -10,5 +10,28 @@ require 'qblox'
 # require 'pry'
 # Pry.start
 
+class CacheStore
+  def initialize
+    @cache = {}
+  end
+
+  def get(key)
+    nil
+  end
+
+  def set_with_expiration(key, expiration_in_seconds, content)
+    nil
+  end
+end
+Qblox.config do |c|
+  # c.account_key = ''
+  # c.application_id = 1234
+  # c.auth_key = ''
+  # c.auth_secret = ''
+
+  c.cache_store = CacheStore.new
+  c.caching = false
+end
+
 require 'irb'
 IRB.start
