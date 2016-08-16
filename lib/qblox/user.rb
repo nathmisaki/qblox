@@ -1,3 +1,4 @@
+require 'digest/sha1'
 module Qblox
   class User < Base
     API_ATTRS = [:id, :owner_id, :full_name, :email, :login, :phone,
@@ -61,7 +62,7 @@ module Qblox
 
     def token
       return @token if token_valid?
-      @session = Qblox::Cache.instance.fetch("user:session:#{Qblox::Cache.hexdigest(session_data)}", SESSION_EXPIRATION) do
+      @session = Qblox::Cache.instance.fetch("user:session:#{hexdigest(session_data)}", SESSION_EXPIRATION) do
         Qblox::Api::Session.new.create(user: session_data)
       end
       @token_expiration = @session['session']['token_expiration']
@@ -124,6 +125,10 @@ module Qblox
     end
 
     private
+
+    def hexdigest(obj)
+      Digest::SHA1.hexdigest(obj.inspect)
+    end
 
     def session_data
       data = { password: password }
