@@ -12,7 +12,8 @@ module Qblox
       # to filter results. Just as explained on the link above
       def index(options = {})
         result = options.delete(:result)
-        all = options.delete('all') || true
+        all = options.delete('all')
+        all = true if all.nil?
         response = query(:get) do |req|
           req.params = options
         end
