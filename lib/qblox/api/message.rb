@@ -71,6 +71,13 @@ module Qblox
         count['items']['count'].to_i
       end
 
+      def unread(chat_dialog_ids=[])
+        response = query(:get) do |req|
+          req.url url(custom_action: '/unread'), { chat_dialog_ids: chat_dialog_ids.to_a.join(',') }
+        end
+        json_parse(response.body)
+      end
+
       private
 
       def validate_params(data)
