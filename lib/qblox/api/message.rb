@@ -18,10 +18,11 @@ module Qblox
 
       def index(chat_dialog_id, options = {})
         result = options.delete(:result)
-        all = options.delete(:all) || true
+        all = options.key?(:all) ? options.delete(:all) : true
         count = options.delete(:count)
+        skip = options.delete(:skip) || 0
 
-        response = query(:get, params: {chat_dialog_id: chat_dialog_id, limit: 1000})
+        response = query(:get, params: {chat_dialog_id: chat_dialog_id, limit: 100, skip: skip })
         data = json_parse(response.body)
         return data unless all
 
