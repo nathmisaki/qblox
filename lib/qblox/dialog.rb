@@ -1,9 +1,11 @@
 module Qblox
   class Dialog < Qblox::Base
-    attr_accessor(:_id, :accessible_for_ids, :created_at, :last_message,
+    ATTRIBUTES = [:_id, :accessible_for_ids, :created_at, :last_message,
                   :last_message_date_sent, :last_message_user_id, :name,
                   :occupants_ids, :photo, :type, :updated_at, :user_id,
-                  :xmpp_room_jid, :unread_messages_count)
+                  :xmpp_room_jid, :unread_messages_count]
+
+    attr_accessor(*ATTRIBUTES)
 
     def messages(token: nil, options: {})
       return @messages unless @messages.nil? || options != {}
@@ -11,6 +13,12 @@ module Qblox
       messages = Qblox::Message::Collection.new(messages, token: token || @token)
       @messages = messages unless options != {}
       messages
+    end
+
+    def attributes
+      ATTRIBUTES.each_with_object({}) do |key, hash|
+        hash[key] = send(key)
+      end
     end
 
     class Collection < Array
