@@ -40,12 +40,11 @@ module Qblox
         json_parse(response.body)
       end
 
-      def destroy(id)
+      def destroy(id, args = {})
         @token = args.delete(:token)
-        response = query(:delete) do |req|
+        query(:delete) do |req|
           req.url url(id: id)
         end
-        true
       end
 
       # Show API User by External User Id
